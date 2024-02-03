@@ -11,19 +11,11 @@ class TransactionSerializers(serializers.ModelSerializer):
 
     def create(self, validated_data):
         sender = AccountOwenrModel.objects.get(user = self.context['request'].user)
-        # receiver = 
-        # receiver = AccountModel.objects.get(user =User.objects.get(id= validated_data['receiver'].id))
-        # receiver = AccountModel.objects.filter(user_id = "2")
-        # print(receiver)
-        # print(validated_data['receiver'].id)
+
         try:
 
             sender_account = AccountModel.objects.select_for_update().get(user = sender , type ='jari')
             receiver_account = AccountModel.objects.get(id =validated_data['receiver'].id )
-            # receiver_account = AccountModel.objects.select_for_update().get(user = receiver , type ='jari')
-            print("------------")
-            print(sender_account.id , validated_data['receiver'].id)
-
 
         except AccountOwenrModel.DoesNotExist:
 
@@ -42,6 +34,7 @@ class TransactionSerializers(serializers.ModelSerializer):
 
                 sender_account.balance -= validated_data['balance']
                 receiver_account.balance += validated_data['balance']
+                
                 sender_account.save()
                 receiver_account.save()
 
