@@ -142,6 +142,7 @@ REST_FRAMEWORK = {
 
 # SIMPLE JWT
 SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=10),
 }
@@ -153,3 +154,5 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
+
+
