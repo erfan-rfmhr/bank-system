@@ -40,6 +40,7 @@ THIRD_PARTY_APPS = [
 # LOCAL APPS
 LOCAL_APPS = [
     'core',
+    'account',
 ]
 
 INSTALLED_APPS = [
