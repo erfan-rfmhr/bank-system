@@ -5,7 +5,7 @@ from django.contrib import admin
 
 class AccountOwenrModel(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL , on_delete = models.CASCADE)
-    phone_number = models.CharField(max_length = 11)
+    phone_number = models.CharField(max_length = 11 )
 
     # @admin.display("user__username")
     def __str__(self) :
@@ -19,4 +19,4 @@ class AccountModel(models.Model):
     user = models.ForeignKey(AccountOwenrModel , on_delete = models.CASCADE)
     balance = models.CharField(max_length =255)
     type = models.CharField(max_length =255 , choices = ACCOUNT_TYPE_CHOICES)
-    is_blocked = models.BooleanField()
+    is_blocked = models.BooleanField(default =False)
