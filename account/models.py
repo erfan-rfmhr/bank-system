@@ -21,6 +21,3 @@ class AccountModel(models.Model):
     type = models.CharField(max_length =255 , choices = ACCOUNT_TYPE_CHOICES)
     is_blocked = models.BooleanField(default =False)
 
-    # @admin.display(ordering='user__username')
-    # def username(self):
-    #     return self.user 
