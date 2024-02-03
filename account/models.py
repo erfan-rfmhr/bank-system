@@ -1,18 +1,22 @@
 from django.db import models
 from django.conf import settings
-
+from django.contrib import admin
 # Create your models here.
 
-class AccountOwenr(models.Model):
-    User = models.OneToOneField(settings.USER_AUTH_MODEL , on_delete = models.CASCADE)
-    phone = models.CharField(max_length = 11)
+class AccountOwenrModel(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL , on_delete = models.CASCADE)
+    phone_number = models.CharField(max_length = 11)
 
-class Account(models.Model):
+    # @admin.display("user__username")
+    def __str__(self) :
+        return self.user.username
+
+class AccountModel(models.Model):
     ACCOUNT_TYPE_CHOICES = [
         ('seporde' , 'seporde'),
         ('jari' , 'jari'),
     ]
-    user = models.ForeignKey(AccountOwenr , on_delete = models.CASCADE)
+    user = models.ForeignKey(AccountOwenrModel , on_delete = models.CASCADE)
     balance = models.CharField(max_length =255)
     type = models.CharField(max_length =255 , choices = ACCOUNT_TYPE_CHOICES)
     
