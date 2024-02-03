@@ -19,4 +19,4 @@ class AccountModel(models.Model):
     user = models.ForeignKey(AccountOwenrModel , on_delete = models.CASCADE)
     balance = models.CharField(max_length =255)
     type = models.CharField(max_length =255 , choices = ACCOUNT_TYPE_CHOICES)
-    
+    is_blocked = models.BooleanField()
