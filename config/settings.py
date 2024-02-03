@@ -158,3 +158,14 @@ SPECTACULAR_SETTINGS = {
 }
 
 AUTH_USER_MODEL =   'core.User'
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+CELERY_BEAT_SCHEDULE = {
+    'NewsScraperTask': {
+        'task': 'transaction.tasks.release_blocked_amount',
+        'schedule': 10 ,
+        'args': [' <<<<<passed >>>>>']
+    }
+}
