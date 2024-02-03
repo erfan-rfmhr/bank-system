@@ -20,3 +20,5 @@ class AccountModel(models.Model):
     type = models.CharField(max_length =255 , choices = ACCOUNT_TYPE_CHOICES)
     is_blocked = models.BooleanField(default =False)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    blocked_until = models.DateField(null =True , blank = True)
