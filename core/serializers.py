@@ -1,10 +1,11 @@
 from djoser.serializers import UserSerializer as BaseUserSerializer, UserCreateSerializer as BaseUserCreateSerializer
-
+from account.models import AccountOwenrModel
 
 class UserCreateSerializer(BaseUserCreateSerializer):
-    class Meta(BaseUserCreateSerializer.Meta):
-        fields = ['id', 'email', 'password', 'first_name', 'last_name', 'username']
-
+    def create(self, validated_data):
+        user = super().create(validated_data)
+        AccountOwenrModel.objects.create(user=user)
+        return user
 
 class UserSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
