@@ -24,9 +24,11 @@ class TransactionSerializers(serializers.ModelSerializer):
 
             raise serializers.ValidationError('کابر با این مشخصات وجود ندارد')
         
-        if sender_account.id == receiver_account.id:
+        if sender_account.id == receiver_account.id or sender_account.user == receiver_account.user:
             raise serializers.ValidationError('شما نمی‌توانید به خودتان وجه ارسال کنید.')
         
+        if receiver_account.type == 'seporde':
+            raise serializers.ValidationError('شما نمیتوانید به حساب از نوع  سپرده پول واریز کنید')
         if  sender_account.balance >= validated_data['balance']:
             if validated_data['balance'] >= 10000  :
                 transaction = TransactionModel.objects.create(
@@ -48,6 +50,7 @@ class TransactionSerializers(serializers.ModelSerializer):
             raise serializers.ValidationError('موجودی کافی نمیباشد')
         
 class TransferSerializer(serializers.ModelSerializer):
+
     user_id = serializers.IntegerField(read_only =True)
     blocked_until = serializers.DateField(read_only =True)
     type = serializers.CharField(read_only =True)
@@ -56,11 +59,13 @@ class TransferSerializer(serializers.ModelSerializer):
         fields = ['user_id' , 'balance'  , 'blocked_until' , 'type'  ]
 
     def save(self, **kwargs):
+
         try:
             loged_in_user = AccountOwenrModel.objects.get(user= self.context['request'].user)
             account_jari = AccountModel.objects.get(user = loged_in_user , type ='jari' )
             account_seporde = AccountModel.objects.get(user = loged_in_user , type ='seporde' )
             amount = self.validated_data['balance']
+
         except AccountModel.DoesNotExist:
             raise serializers.ValidationError('حسابی یافت نشد')
         

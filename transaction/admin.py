@@ -5,5 +5,5 @@ from .models import TransactionModel
 
 
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = ['balance']
+    list_display = ['balance' ]
 admin.site.register(TransactionModel , TransactionAdmin)
