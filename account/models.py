@@ -22,3 +22,6 @@ class AccountModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     blocked_until = models.DateField(null =True , blank = True)
+
+    def __str__(self) -> str:
+        return f"{self.user}"
