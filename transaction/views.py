@@ -6,25 +6,39 @@ from rest_framework.viewsets import ModelViewSet
 from .models import TransactionModel
 from account.models import AccountOwenrModel, AccountModel
 from .serializers import TransactionSerializers , TransferSerializer
+
 # Create your views here.
 
-class TransactionApiView(APIView):
-    permission_classes = [IsAuthenticated]
+# class TransactionApiView(APIView):
+#     permission_classes = [IsAuthenticated]
     
-    def get(self,request):
+#     def get(self,request):
 
+#         loged_in_user = AccountOwenrModel.objects.get(user =self.request.user) 
+#         account = AccountModel.objects.get(user = loged_in_user , type ='jari')
+#         queryset = TransactionModel.objects.filter(sender= account).order_by('-created_at')[:10]
+#         serializer = TransactionSerializers(queryset , many =True)
+#         return Response(serializer.data)
+
+    
+#     def post(self,request):
+#         serializer = TransactionSerializers(data= request.data , context = {'request' : request})
+#         serializer.is_valid(raise_exception=True)
+#         transaction = serializer.save()
+#         return Response(serializer.data )
+    
+class TransactionApiView(ModelViewSet):
+    serializer_class = TransactionSerializers
+
+    def get_queryset(self):
+        
         loged_in_user = AccountOwenrModel.objects.get(user =self.request.user) 
         account = AccountModel.objects.get(user = loged_in_user , type ='jari')
         queryset = TransactionModel.objects.filter(sender= account).order_by('-created_at')[:10]
-        serializer = TransactionSerializers(queryset , many =True)
-        return Response(serializer.data)
 
-    
-    def post(self,request):
-        serializer = TransactionSerializers(data= request.data , context = {'request' : request})
-        serializer.is_valid(raise_exception=True)
-        transaction = serializer.save()
-        return Response(serializer.data )
+        return queryset
+    def get_serializer_context(self):
+        return {'request' : self.request}
 
 
 
@@ -44,13 +58,3 @@ class TransferJari2Sepordeview(ModelViewSet):
         return {'request' : self.request }
     
 
-# class TransferJari2Sepordeview(APIView):
-#     def get(self,request):
-#         loged_in_user = AccountOwenrModel.objects.get(user= self.request.user)
-#         queryset = AccountModel.objects.filter(user = loged_in_user )
-#         serializer = TransferSerializer(queryset , many =True)
-#         return Response(serializer.data)
-
-#     def post(self,request):
-#         serializer = TransferSerializer(data= request.data , context = {'request' : request})
-#         serializer.is_valid(raise_exception=True)
