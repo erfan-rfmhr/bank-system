@@ -3,4 +3,7 @@ from .models import TransactionModel
 
 # Register your models here.
 
-admin.site.register(TransactionModel)
+
+class TransactionAdmin(admin.ModelAdmin):
+    list_display = ['balance' ]
+admin.site.register(TransactionModel , TransactionAdmin)
