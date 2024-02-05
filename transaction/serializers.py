@@ -30,8 +30,9 @@ class TransactionSerializers(serializers.ModelSerializer):
         
         if receiver_account.type == 'seporde':
             raise serializers.ValidationError('شما نمیتوانید به حساب از نوع  سپرده پول واریز کنید')
-
-        if  sender_account.balance >= validated_data['balance'] and receiver_account.is_active:
+        if not receiver_account.is_active:
+            raise serializers.ValidationError('حساب مقصد غیر فعال میباشد')
+        if  sender_account.balance >= validated_data['balance']:
             if validated_data['balance'] >= 10000  :
                 transaction = TransactionModel.objects.create(
                     sender = sender_account,

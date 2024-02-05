@@ -1,10 +1,27 @@
-from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import AccountOwenrModel, AccountModel
-from .serializers import AccountOwnerSerializer, AccountJariCreationSerializer, AccountSepordeCreationSerializer
+from .serializers import AccountOwnerSerializer, AccountJariCreationSerializer, AccountSepordeCreationSerializer, \
+    AdminCreateAccountOwnerSerializer, AccountSerializer
+
+
+class AccountListView(ListAPIView):
+    serializer_class = AccountSerializer
+    queryset = AccountModel.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return AccountModel.objects.filter(user=user.account_owner)
+
+
+class AdminCreateAccountOwnerView(CreateAPIView):
+    serializer_class = AdminCreateAccountOwnerSerializer
+    queryset = AccountOwenrModel.objects.all()
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
 
 class AdminAccountOwnerUpdateView(RetrieveUpdateDestroyAPIView):
@@ -13,6 +30,15 @@ class AdminAccountOwnerUpdateView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsAdminUser]
     lookup_field = 'user__username'
     lookup_url_kwarg = 'username'
+
+
+class AccountOwnerUpdateView(RetrieveUpdateAPIView):
+    serializer_class = AccountOwnerSerializer
+    queryset = AccountOwenrModel.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.queryset.get(user=self.request.user)
 
 
 class AccountJariCreateView(CreateAPIView):

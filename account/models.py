@@ -4,7 +4,7 @@ from django.contrib import admin
 # Create your models here.
 class AccountOwenrModel(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL , on_delete = models.CASCADE, related_name='account_owner')
-    phone_number = models.CharField(max_length = 11, null=True, blank=True)
+    phone_number = models.CharField(max_length = 11, null=True, blank=True, unique=True)
 
     # @admin.display("user__username")
     def __str__(self) :
