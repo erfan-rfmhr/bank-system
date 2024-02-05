@@ -48,3 +48,19 @@ class AccountJariCreationSerializer(serializers.ModelSerializer):
             type='jari'
         )
         return account
+
+
+class AccountSepordeCreationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AccountModel
+        fields = ['id', 'balance', 'type']
+        read_only_fields = ['id', 'type']
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        account = AccountModel.objects.create(
+            user=user.account_owner,
+            balance=validated_data['balance'],
+            type='seporde'
+        )
+        return account
