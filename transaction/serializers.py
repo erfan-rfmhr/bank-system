@@ -21,9 +21,10 @@ class TransactionSerializers(serializers.ModelSerializer):
             receiver_account = AccountModel.objects.get(id =validated_data['receiver'].id )
 
         except AccountOwenrModel.DoesNotExist:
-
             raise serializers.ValidationError('کابر با این مشخصات وجود ندارد')
-        
+        except AccountModel.DoesNotExist:
+            raise serializers.ValidationError('حسابی با این مشخصات وجود ندارد')
+
         if sender_account.id == receiver_account.id or sender_account.user == receiver_account.user:
             raise serializers.ValidationError('شما نمی‌توانید به خودتان وجه ارسال کنید.')
         
