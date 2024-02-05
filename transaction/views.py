@@ -6,7 +6,7 @@ from rest_framework.viewsets import ModelViewSet
 from .models import TransactionModel
 from account.models import AccountOwenrModel, AccountModel
 from .serializers import TransactionSerializers , TransferSerializer
-
+from rest_framework import serializers
 # Create your views here.
 
 # class TransactionApiView(APIView):
@@ -33,8 +33,11 @@ class TransactionApiView(ModelViewSet):
 
     def get_queryset(self):
         
-        loged_in_user = AccountOwenrModel.objects.get(user =self.request.user) 
-        account = AccountModel.objects.get(user = loged_in_user , type ='jari')
+        loged_in_user = AccountOwenrModel.objects.get(user =self.request.user)
+        try:
+            account = AccountModel.objects.get(user = loged_in_user , type ='jari')
+        except AccountModel.DoesNotExist:
+            raise serializers.ValidationError('حسابی با این مشخصات وجود ندارد')
         queryset = TransactionModel.objects.filter(sender= account).order_by('-created_at')[:10]
 
         return queryset
