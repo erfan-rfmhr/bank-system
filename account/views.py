@@ -1,4 +1,4 @@
-from rest_framework.generics import UpdateAPIView, CreateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -7,7 +7,7 @@ from .models import AccountOwenrModel, AccountModel
 from .serializers import AccountOwnerSerializer, AccountJariCreationSerializer, AccountSepordeCreationSerializer
 
 
-class AdminAccountOwnerUpdateView(UpdateAPIView):
+class AdminAccountOwnerUpdateView(RetrieveUpdateDestroyAPIView):
     serializer_class = AccountOwnerSerializer
     queryset = AccountOwenrModel.objects.all()
     permission_classes = [IsAuthenticated, IsAdminUser]
