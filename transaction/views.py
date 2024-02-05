@@ -28,6 +28,7 @@ from .serializers import TransactionSerializers , TransferSerializer
 #         return Response(serializer.data )
     
 class TransactionApiView(ModelViewSet):
+    permission_classes = (IsAuthenticated,)
     serializer_class = TransactionSerializers
 
     def get_queryset(self):
