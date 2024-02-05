@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import AccountOwenrModel
+from .models import AccountOwenrModel, AccountModel
 
 
 class AccountOwnerSerializer(serializers.ModelSerializer):
@@ -32,3 +32,19 @@ class AccountOwnerSerializer(serializers.ModelSerializer):
         user.last_name = user_data.get('last_name', user.last_name)
         user.save()
         return user
+
+
+class AccountJariCreationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AccountModel
+        fields = ['id', 'balance', 'type']
+        read_only_fields = ['id', 'type']
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        account = AccountModel.objects.create(
+            user=user.account_owner,
+            balance=validated_data['balance'],
+            type='jari'
+        )
+        return account
