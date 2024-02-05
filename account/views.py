@@ -1,15 +1,16 @@
 from rest_framework.generics import UpdateAPIView, CreateAPIView
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from .models import AccountOwenrModel, AccountModel
 from .serializers import AccountOwnerSerializer, AccountJariCreationSerializer, AccountSepordeCreationSerializer
 
 
-class AccountOwnerUpdateView(UpdateAPIView):
+class AdminAccountOwnerUpdateView(UpdateAPIView):
     serializer_class = AccountOwnerSerializer
     queryset = AccountOwenrModel.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdminUser]
     lookup_field = 'user__username'
     lookup_url_kwarg = 'username'
 
