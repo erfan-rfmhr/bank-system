@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -40,6 +40,15 @@ class TransactionApiView(ModelViewSet):
         return queryset
     def get_serializer_context(self):
         return {'request' : self.request}
+
+
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            instance = TransactionModel.objects.get(id = kwargs['pk'])
+        except TransactionModel.DoesNotExist:
+            return Response({'detail' : 'Not found'}, status = 404)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 
 
